@@ -2,6 +2,7 @@
 from flask import Flask, render_template
 from .config import Config
 from .tweets import tweets
+from .form.form import PostForm
 import random
 
 app = Flask(__name__)
@@ -18,3 +19,8 @@ def index():
 @app.route('/feed')
 def feed():
     return render_template("feed.html", tweets=tweets)
+
+@app.route('/new', methods=["GET", "POST"])
+def post():
+    form = PostForm()
+    return render_template("new_tweet.html", form=form)
