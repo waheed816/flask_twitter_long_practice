@@ -9,7 +9,7 @@
             <p style="color: red;">{{ error }}</p>
         {% endfor %}
     {% endif %}
-    <form class="tweet" action="/posts/new" method="POST">
+    <form class="tweet" action="/new" method="POST">
         {{ form.csrf_token }}
         <p>{{ form.author.label }}: {{ form.author }}</p>
         <p>{{ form.tweet.label}}: {{form.tweet}}</p>

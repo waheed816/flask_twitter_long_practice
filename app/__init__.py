@@ -1,9 +1,10 @@
 # !!START
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from .config import Config
 from .tweets import tweets
+from datetime import date
 from .form.form import PostForm
-import random
+from random import randint
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,5 +23,19 @@ def feed():
 
 @app.route('/new', methods=["GET", "POST"])
 def post():
+    print("ENTER NEW ROW")
     form = PostForm()
-    return render_template("new_tweet.html", form=form)
+    if form.validate_on_submit():
+        print("IM HERE")
+        new_post = {
+            "id": len(tweets) + 1,
+            "author": form.data["author"],
+            "tweet": form.data["tweet"],
+            "date": date.today(),
+            "likes": randint(1000,1000000)}
+        tweets.append(new_post)
+        return redirect('/feed')
+    if form.errors:
+        return render_template("post_form.html", form=form, errors=form.errors)
+
+    return render_template("new_tweet.html", form=form, errors=None)
